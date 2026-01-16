@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบสำรวจคะแนนนิยมการเลือกตั้ง</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 18px;
+            font-weight: 300;
+            opacity: 0.95;
+        }
+
+        .form-content {
+            padding: 40px 30px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            margin-right: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: 'Sarabun', sans-serif;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .radio-item:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: translateX(5px);
+        }
+
+        .radio-item input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .radio-item label {
+            margin: 0;
+            cursor: pointer;
+            flex: 1;
+            font-weight: 400;
+        }
+
+        .candidate-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .candidate-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .candidate-party {
+            color: #666;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+
+        .submit-section {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .required {
+            color: #e74c3c;
+            margin-left: 3px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .form-content {
+                padding: 25px 20px;
+            }
+
+            .section {
+                padding: 20px 15px;
+            }
+
+            .section-title {
+                font-size: 18px;
+            }
+
+            .submit-btn {
+                width: 100%;
+                padding: 15px 30px;
+            }
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>📊 แบบสำรวจคะแนนนิยมการเลือกตั้ง</h1>
+                <p>สำนักงานสาธารณสุขอำเภอ</p>
+            </div>
+        </div>
+
+        <div class="form-content">
+            <div id="message" class="message"></div>
+
+            <form id="surveyForm">
+                <!-- ส่วนที่ 1: ข้อมูลพื้นฐาน -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-number">1</span>
+                        ข้อมูลพื้นฐาน
+                    </h2>
+                    
+                    <div class="form-group">
+                        <label>อำเภอ <span class="required">*</span></label>
+                        <input type="text" id="district" name="district" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>ตำบล <span class="required">*</span></label>
+                        <input type="text" id="subdistrict" name="subdistrict" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>หมู่ที่ <span class="required">*</span></label>
+                        <input type="text" id="village" name="village" required placeholder="ระบุหมู่ที่">
+                    </div>
+
+                    <div class="form-group">
+                        <label>เขตเลือกตั้ง <span class="required">*</span></label>
+                        <select id="constituency" name="constituency" required>
+                            <option value="">-- เลือกเขตเลือกตั้ง --</option>
+                            <option value="6">เขต 6</option>
+                            <option value="8">เขต 8</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- ส่วนที่ 2: ความนิยมพรรคการเมือง -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-number">2</span>
+                        ความนิยมพรรคการเมือง
+                    </h2>
+                    
+                    <label>ท่านมีความนิยมพรรคการเมืองใด? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="party1" name="party" value="พรรคเพื่อไทย" required>
+                            <label for="party1">พรรคเพื่อไทย</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="party2" name="party" value="พรรคก้าวไกล/พรรคก้าวหน้า" required>
+                            <label for="party2">พรรคก้าวไกล / พรรคก้าวหน้า</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="party3" name="party" value="พรรคภูมิใจไทย" required>
+                            <label for="party3">พรรคภูมิใจไทย</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="party4" name="party" value="พรรคประชาธิปัตย์" required>
+                            <label for="party4">พรรคประชาธิปัตย์</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="party5" name="party" value="พรรคพลังประชารัฐ" required>
+                            <label for="party5">พรรคพลังประชารัฐ</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="party6" name="party" value="พรรคเศรษฐกิจใหม่" required>
+                            <label for="party6">พรรคเศรษฐกิจใหม่</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="party7" name="party" value="พรรคชาติไทยพัฒนา" required>
+                            <label for="party7">พรรคชาติไทยพัฒนา</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="party8" name="party" value="พรรคอื่นๆ" required>
+                            <label for="party8">พรรคอื่นๆ</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="party9" name="party" value="ยังไม่ตัดสินใจ" required>
+                            <label for="party9">ยังไม่ตัดสินใจ</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ส่วนที่ 3: ความนิยมผู้สมัคร ส.ส. เขต 6 -->
+                <div class="section hidden" id="section-district-6">
+                    <h2 class="section-title">
+                        <span class="section-number">3</span>
+                        ความนิยมผู้สมัคร ส.ส. เขต 6
+                    </h2>
+                    
+                    <label>ท่านมีความนิยมผู้สมัคร ส.ส. คนใด? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="c6_1" name="candidate" value="น.ส. ทักษิณา ทับครบุรี - พรรคกล้าธรรม">
+                            <label for="c6_1">
+                                <span class="candidate-number">1</span>
+                                <span class="candidate-name">น.ส. ทักษิณา ทับครบุรี</span>
+                                <span class="candidate-party">(พรรคกล้าธรรม)</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="c6_2" name="candidate" value="นาย สมบัติ ศรีสุรินทร์ - พรรคเพื่อไทย">
+                            <label for="c6_2">
+                                <span class="candidate-number">2</span>
+                                <span class="candidate-name">นาย สมบัติ ศรีสุรินทร์</span>
+                                <span class="candidate-party">(พรรคเพื่อไทย)</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="c6_3" name="candidate" value="นาย จันทร์ สมัญญา - พรรคเศรษฐกิจ">
+                            <label for="c6_3">
+                                <span class="candidate-number">3</span>
+                                <span class="candidate-name">นาย จันทร์ สมัญญา</span>
+                                <span class="candidate-party">(พรรคเศรษฐกิจ)</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="c6_4" name="candidate" value="นาย ล้ำเลิศ พัวพัฒนโชติ - พรรคภูมิใจไทย">
+                            <label for="c6_4">
+                                <span class="candidate-number">4</span>
+                                <span class="candidate-name">นาย ล้ำเลิศ พัวพัฒนโชติ</span>
+                                <span class="candidate-party">(พรรคภูมิใจไทย)</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="c6_5" name="candidate" value="นาย ธนกร นานวน - พรรคประชาชน">
+                            <label for="c6_5">
+                                <span class="candidate-number">5</span>
+                                <span class="candidate-name">นาย ธนกร นานวน</span>
+                                <span class="candidate-party">(พรรคประชาชน)</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="c6_6" name="candidate" value="นาย พัฑฒิณัฐ สุตวณิชย์ - พรรคประชาธิปัตย์">
+                            <label for="c6_6">
+                                <span class="candidate-number">6</span>
+                                <span class="candidate-name">นาย พัฑฒิณัฐ สุตวณิชย์</span>
+                                <span class="candidate-party">(พรรคประชาธิปัตย์)</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="c6_7" name="candidate" value="นาย พัสกร สิงห์ทอง - พรรครวมไทยสร้างชาติ">
+                            <label for="c6_7">
+                                <span class="candidate-number">7</span>
+                                <span class="candidate-name">นาย พัสกร สิงห์ทอง</span>
+                                <span class="candidate-party">(พรรครวมไทยสร้างชาติ)</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="c6_8" name="candidate" value="นาย มานพ พุ่มทอง - พรรคไทยทรัพย์ทวี">
+                            <label for="c6_8">
+                                <span class="candidate-number">8</span>
+                                <span class="candidate-name">นาย มานพ พุ่มทอง</span>
+                                <span class="candidate-party">(พรรคไทยทรัพย์ทวี)</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="c6_9" name="candidate" value="นาย ธนกร ศรีโกตะเพ็ชร - พรรคปวงชนไทย">
+                            <label for="c6_9">
+                                <span class="candidate-number">9</span>
+                                <span class="candidate-name">นาย ธนกร ศรีโกตะเพ็ชร</span>
+                                <span class="candidate-party">(พรรคปวงชนไทย)</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="c6_undecided" name="candidate" value="ยังไม่ตัดสินใจ">
+                            <label for="c6_undecided">
+                                <span class="candidate-name">ยังไม่ตัดสินใจ</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ส่วนที่ 3: ความนิยมผู้สมัคร ส.ส. เขต 8 -->
+                <div class="section hidden" id="section-district-8">
+                    <h2 class="section-title">
+                        <span class="section-number">3</span>
+                        ความนิยมผู้สมัคร ส.ส. เขต 8
+                    </h2>
+                    
+                    <label>ท่านมีความนิยมผู้สมัคร ส.ส. คนใด? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="c8_1" name="candidate" value="นาย อำนวย แท่นดี - พรรคกล้าธรรม">
+                            <label for="c8_1">
+                                <span class="candidate-number">1</span>
+                                <span class="candidate-name">นาย อำนวย แท่นดี</span>
+                                <span class="candidate-party">(พรรคกล้าธรรม)</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="c8_2" name="candidate" value="นาง ปทิดา ตันติรัตนานนท์ - พรรคภูมิใจไทย">
+                            <label for="c8_2">
+                                <span class="candidate-number">2</span>
+                                <span class="candidate-name">นาง ปทิดา ตันติรัตนานนท์</span>
+                                <span class="candidate-party">(พรรคภูมิใจไทย)</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="c8_3" name="candidate" value="น.ส. ปลายฟ้า ปานทอง - พรรคเศรษฐกิจ">
+                            <label for="c8_3">
+                                <span class="candidate-number">3</span>
+                                <span class="candidate-name">น.ส. ปลายฟ้า ปานทอง</span>
+                                <span class="candidate-party">(พรรคเศรษฐกิจ)</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="c8_4" name="candidate" value="นาย จรูญ จุดาบุตร - พรรคเพื่อไทย">
+                            <label for="c8_4">
+                                <span class="candidate-number">4</span>
+                                <span class="candidate-name">นาย จรูญ จุดาบุตร</span>
+                                <span class="candidate-party">(พรรคเพื่อไทย)</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="c8_5" name="candidate" value="นาย กิตตินันท์ วังอมรมิตร - พรรคประชาชน">
+                            <label for="c8_5">
+                                <span class="candidate-number">5</span>
+                                <span class="candidate-name">นาย กิตตินันท์ วังอมรมิตร</span>
+                                <span class="candidate-party">(พรรคประชาชน)</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="c8_6" name="candidate" value="นาย บัณฑิต ศิลาอ่อน - พรรครวมไทยสร้างชาติ">
+                            <label for="c8_6">
+                                <span class="candidate-number">6</span>
+                                <span class="candidate-name">นาย บัณฑิต ศิลาอ่อน</span>
+                                <span class="candidate-party">(พรรครวมไทยสร้างชาติ)</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="c8_7" name="candidate" value="นาย ไพบูลย์ ศิริมา - พรรคประชาธิปัตย์">
+                            <label for="c8_7">
+                                <span class="candidate-number">7</span>
+                                <span class="candidate-name">นาย ไพบูลย์ ศิริมา</span>
+                                <span class="candidate-party">(พรรคประชาธิปัตย์)</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="c8_8" name="candidate" value="นาย สมรส มั่นยืน - พรรคปวงชนไทย">
+                            <label for="c8_8">
+                                <span class="candidate-number">8</span>
+                                <span class="candidate-name">นาย สมรส มั่นยืน</span>
+                                <span class="candidate-party">(พรรคปวงชนไทย)</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="c8_undecided" name="candidate" value="ยังไม่ตัดสินใจ">
+                            <label for="c8_undecided">
+                                <span class="candidate-name">ยังไม่ตัดสินใจ</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ปุ่มส่งข้อมูล -->
+                <div class="submit-section">
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        ส่งข้อมูลแบบสำรวจ
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 สำนักงานสาธารณสุขอำเภอ | ข้อมูลของท่านจะถูกเก็บเป็นความลับ</p>
+        </div>
+    </div>
+
+    <script>
+        // แสดง/ซ่อนส่วนผู้สมัคร ส.ส. ตามเขตที่เลือก
+        document.getElementById('constituency').addEventListener('change', function() {
+            const district6 = document.getElementById('section-district-6');
+            const district8 = document.getElementById('section-district-8');
+            
+            // ล้างค่าเดิมทั้งหมด
+            document.querySelectorAll('input[name="candidate"]').forEach(radio => {
+                radio.checked = false;
+                radio.removeAttribute('required');
+            });
+
+            // แสดงส่วนที่ถูกต้อง
+            if (this.value === '6') {
+                district6.classList.remove('hidden');
+                district8.classList.add('hidden');
+                // เพิ่ม required สำหรับเขต 6
+                document.querySelectorAll('#section-district-6 input[name="candidate"]').forEach(radio => {
+                    radio.setAttribute('required', 'required');
+                });
+            } else if (this.value === '8') {
+                district8.classList.remove('hidden');
+                district6.classList.add('hidden');
+                // เพิ่ม required สำหรับเขต 8
+                document.querySelectorAll('#section-district-8 input[name="candidate"]').forEach(radio => {
+                    radio.setAttribute('required', 'required');
+                });
+            } else {
+                district6.classList.add('hidden');
+                district8.classList.add('hidden');
+            }
+        });
+
+        // จัดการส่งฟอร์ม
+        document.getElementById('surveyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const messageDiv = document.getElementById('message');
+            
+            // รวบรวมข้อมูล
+            const formData = {
+                timestamp: new Date().toLocaleString('th-TH'),
+                district: document.getElementById('district').value,
+                subdistrict: document.getElementById('subdistrict').value,
+                village: document.getElementById('village').value,
+                constituency: document.getElementById('constituency').value,
+                party: document.querySelector('input[name="party"]:checked').value,
+                candidate: document.querySelector('input[name="candidate"]:checked').value
+            };
+
+            // ปิดการใช้งานปุ่มชั่วคราว
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'กำลังส่งข้อมูล...';
+
+            // ส่งข้อมูลไปยัง Google Apps Script
+            // แทนที่ YOUR_WEB_APP_URL ด้วย URL ที่ได้จาก Google Apps Script
+            const scriptURL = 'YOUR_WEB_APP_URL'; // ใส่ URL ของ Web App ที่นี่
+
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(formData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    messageDiv.className = 'message success';
+                    messageDiv.textContent = '✅ ส่งข้อมูลสำเร็จ ขอบคุณสำหรับการตอบแบบสำรวจ';
+                    messageDiv.style.display = 'block';
+                    
+                    // รีเซ็ตฟอร์ม
+                    document.getElementById('surveyForm').reset();
+                    document.getElementById('section-district-6').classList.add('hidden');
+                    document.getElementById('section-district-8').classList.add('hidden');
+                    
+                    // เลื่อนขึ้นด้านบน
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    throw new Error(data.message || 'เกิดข้อผิดพลาด');
+                }
+            })
+            .catch(error => {
+                messageDiv.className = 'message error';
+                messageDiv.textContent = '❌ เกิดข้อผิดพลาด: ' + error.message;
+                messageDiv.style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'ส่งข้อมูลแบบสำรวจ';
+                
+                // ซ่อนข้อความหลัง 5 วินาที
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 5000);
+            });
+        });
+
+        // ป้องกันการส่งฟอร์มซ้ำ
+        let isSubmitting = false;
+        document.getElementById('surveyForm').addEventListener('submit', function(e) {
+            if (isSubmitting) {
+                e.preventDefault();
+                return false;
+            }
+            isSubmitting = true;
+            setTimeout(() => { isSubmitting = false; }, 3000);
+        });
+    </script>
+</body>
+</html>
