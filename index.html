@@ -316,8 +316,8 @@
     <div class="container">
         <div class="header">
             <div class="header-content">
-                <h1>📊 แบบสำรวจคะแนนนิยมการเลือกตั้ง</h1>
-                <p>สำนักงานสาธารณสุขอำเภอ</p>
+                <h1>📊 แบบสำรวจความคิดเห็นประชาชน</h1>
+                <p>"เลือกตั้ง 2569"</p>
             </div>
         </div>
 
@@ -334,12 +334,48 @@
                     
                     <div class="form-group">
                         <label>อำเภอ <span class="required">*</span></label>
-                        <input type="text" id="district" name="district" required>
+                        <select id="district" name="district" required>
+                            <option value="">-- เลือกอำเภอ --</option>
+                            <option value="อำเภอเมืองสุรินทร์">1. อำเภอเมืองสุรินทร์</option>
+                            <option value="อำเภอชุมพลบุรี">2. อำเภอชุมพลบุรี</option>
+                            <option value="อำเภอท่าตูม">3. อำเภอท่าตูม</option>
+                            <option value="อำเภอจอมพระ">4. อำเภอจอมพระ</option>
+                            <option value="อำเภอปราสาท">5. อำเภอปราสาท</option>
+                            <option value="อำเภอกาบเชิง">6. อำเภอกาบเชิง</option>
+                            <option value="อำเภอรัตนบุรี">7. อำเภอรัตนบุรี</option>
+                            <option value="อำเภอสนม">8. อำเภอสนม</option>
+                            <option value="อำเภอศีขรภูมิ">9. อำเภอศีขรภูมิ</option>
+                            <option value="อำเภอสังขะ">10. อำเภอสังขะ</option>
+                            <option value="อำเภอลำดวน">11. อำเภอลำดวน</option>
+                            <option value="อำเภอสำโรงทาบ">12. อำเภอสำโรงทาบ</option>
+                            <option value="อำเภอบัวเชด">13. อำเภอบัวเชด</option>
+                            <option value="อำเภอพนมดงรัก">14. อำเภอพนมดงรัก</option>
+                            <option value="อำเภอศรีณรงค์">15. อำเภอศรีณรงค์</option>
+                            <option value="อำเภอเขวาสินรินทร์">16. อำเภอเขวาสินรินทร์</option>
+                            <option value="อำเภอโนนนารายณ์">17. อำเภอโนนนารายณ์</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
                         <label>ตำบล <span class="required">*</span></label>
-                        <input type="text" id="subdistrict" name="subdistrict" required>
+                        <!-- Dropdown สำหรับอำเภอสังขะ -->
+                        <select id="subdistrict-select" name="subdistrict" class="hidden" required disabled>
+                            <option value="">-- เลือกตำบล --</option>
+                            <option value="สังขะ">1. สังขะ</option>
+                            <option value="ขอนแตก">2. ขอนแตก</option>
+                            <option value="ดม">3. ดม</option>
+                            <option value="พระแก้ว">4. พระแก้ว</option>
+                            <option value="บ้านจารย์">5. บ้านจารย์</option>
+                            <option value="กระเทียม">6. กระเทียม</option>
+                            <option value="สะกาด">7. สะกาด</option>
+                            <option value="ตาตุม">8. ตาตุม</option>
+                            <option value="ทับทัน">9. ทับทัน</option>
+                            <option value="ตาคง">10. ตาคง</option>
+                            <option value="บ้านชบ">11. บ้านชบ</option>
+                            <option value="เทพรักษา">12. เทพรักษา</option>
+                        </select>
+                        <!-- Input สำหรับอำเภออื่น -->
+                        <input type="text" id="subdistrict-input" name="subdistrict" placeholder="ระบุชื่อตำบล" required disabled>
                     </div>
 
                     <div class="form-group">
@@ -587,11 +623,54 @@
         </div>
 
         <div class="footer">
-            <p>© 2025 สำนักงานสาธารณสุขอำเภอ | ข้อมูลของท่านจะถูกเก็บเป็นความลับ</p>
+            <p>© 2025 แบบสำรวจความคิดเห็นประชาชน | ข้อมูลของท่านจะถูกเก็บเป็นความลับ</p>
         </div>
     </div>
 
     <script>
+        // แสดง/ซ่อน input ตำบลตามอำเภอที่เลือก
+        document.getElementById('district').addEventListener('change', function() {
+            const selectSubdistrict = document.getElementById('subdistrict-select');
+            const inputSubdistrict = document.getElementById('subdistrict-input');
+            
+            if (this.value === 'อำเภอสังขะ') {
+                // แสดง dropdown ตำบล สำหรับอำเภอสังขะ
+                selectSubdistrict.classList.remove('hidden');
+                selectSubdistrict.removeAttribute('disabled');
+                selectSubdistrict.setAttribute('required', 'required');
+                selectSubdistrict.value = '';
+                
+                // ซ่อน input ตำบล
+                inputSubdistrict.classList.add('hidden');
+                inputSubdistrict.setAttribute('disabled', 'disabled');
+                inputSubdistrict.removeAttribute('required');
+                inputSubdistrict.value = '';
+            } else if (this.value !== '') {
+                // แสดง input ตำบล สำหรับอำเภออื่น
+                inputSubdistrict.classList.remove('hidden');
+                inputSubdistrict.removeAttribute('disabled');
+                inputSubdistrict.setAttribute('required', 'required');
+                inputSubdistrict.value = '';
+                
+                // ซ่อน dropdown ตำบล
+                selectSubdistrict.classList.add('hidden');
+                selectSubdistrict.setAttribute('disabled', 'disabled');
+                selectSubdistrict.removeAttribute('required');
+                selectSubdistrict.value = '';
+            } else {
+                // ถ้ายังไม่เลือกอำเภอ ซ่อนทั้งสอง
+                selectSubdistrict.classList.add('hidden');
+                selectSubdistrict.setAttribute('disabled', 'disabled');
+                selectSubdistrict.removeAttribute('required');
+                selectSubdistrict.value = '';
+                
+                inputSubdistrict.classList.add('hidden');
+                inputSubdistrict.setAttribute('disabled', 'disabled');
+                inputSubdistrict.removeAttribute('required');
+                inputSubdistrict.value = '';
+            }
+        });
+
         // แสดง/ซ่อนส่วนผู้สมัคร ส.ส. ตามเขตที่เลือก
         document.getElementById('constituency').addEventListener('change', function() {
             const district6 = document.getElementById('section-district-6');
@@ -631,11 +710,16 @@
             const submitBtn = document.getElementById('submitBtn');
             const messageDiv = document.getElementById('message');
             
+            // รับค่าตำบลจาก input ที่ active
+            const subdistrictSelect = document.getElementById('subdistrict-select');
+            const subdistrictInput = document.getElementById('subdistrict-input');
+            const subdistrictValue = subdistrictSelect.disabled ? subdistrictInput.value : subdistrictSelect.value;
+            
             // รวบรวมข้อมูล
             const formData = {
                 timestamp: new Date().toLocaleString('th-TH'),
                 district: document.getElementById('district').value,
-                subdistrict: document.getElementById('subdistrict').value,
+                subdistrict: subdistrictValue,
                 village: document.getElementById('village').value,
                 constituency: document.getElementById('constituency').value,
                 party: document.querySelector('input[name="party"]:checked').value,
@@ -676,6 +760,8 @@
                         document.getElementById('surveyForm').reset();
                         document.getElementById('section-district-6').classList.add('hidden');
                         document.getElementById('section-district-8').classList.add('hidden');
+                        document.getElementById('subdistrict-select').classList.add('hidden');
+                        document.getElementById('subdistrict-input').classList.add('hidden');
                         
                         // เลื่อนขึ้นด้านบน
                         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -696,6 +782,8 @@
                     document.getElementById('surveyForm').reset();
                     document.getElementById('section-district-6').classList.add('hidden');
                     document.getElementById('section-district-8').classList.add('hidden');
+                    document.getElementById('subdistrict-select').classList.add('hidden');
+                    document.getElementById('subdistrict-input').classList.add('hidden');
                     
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
